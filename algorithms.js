@@ -61,43 +61,62 @@ const matchParens = function(parens) {
     }
   };
 
-  for (let i=0; i < parens.length; i++) {
-    if(parens[i] === '(' || parens[i] === '{' || parens[i] === '[') {
-      parensStack.push(parens[i]);
+  let countOne=0;
+  let countTwo=0;
+  let endStringOne=0;
+  let endStringTwo=0;
+
+  for (let ind=0; ind < parens.length; ind++) {
+    if (parens[ind] === '"') {
+      countOne++;
+      endStringOne=ind;
     }
-    else if (parens[i] === ')' ) {
-      peek(parensStack);
-      if (topValue === '(') {
-        parensStack.pop();
-      } else {
-        return `Was expecting ( but instead got ${topValue ? topValue : parens[i]}`;
+    // else if (parens[ind] === '\'') {
+    //   countTwo++;
+    // }
+    while (countOne%2 === 0) {
+      for (let i=ind+1; i < parens.length; i++) {
+        if(parens[i] === '"'){
+          return null;
+        }
+        else if(parens[i] === '(' || parens[i] === '{' || parens[i] === '[') {
+          parensStack.push(parens[i]);
+        }
+        else if (parens[i] === ')' ) {
+          peek(parensStack);
+          if (topValue === '(') {
+            parensStack.pop();
+          } else {
+            return `Was expecting ( but instead got ${topValue ? topValue : parens[i]}`;
+          }
+        }
+        else if (parens[i] === ']' ) {
+          peek(parensStack);
+          if (topValue === '[') {
+            parensStack.pop();
+          } else {
+            return `Was expecting [ but instead got ${topValue}`;
+          }
+        }
+        else if (parens[i] === '}' ) {
+          peek(parensStack);
+          if (topValue === '{') {
+            parensStack.pop();
+          } else {
+            return `Was expecting { but instead got ${topValue}`;
+          }
+        }
+      }
+      if (parensStack.top === null) {
+        return 'Parens are valid';
+      }
+      else if (topValue) {
+        return `Parens missing- need closure for ${topValue}`;
       }
     }
-    else if (parens[i] === ']' ) {
-      peek(parensStack);
-      if (topValue === '[') {
-        parensStack.pop();
-      } else {
-        return `Was expecting [ but instead got ${topValue}`;
-      }
-    }
-    else if (parens[i] === '}' ) {
-      peek(parensStack);
-      if (topValue === '{') {
-        parensStack.pop();
-      } else {
-        return `Was expecting { but instead got ${topValue}`;
-      }
-    }
-  }
-  if (!topValue) {
-    return 'Parens are valid';
-  }
-  else {
-    return `Parens missing- need closure for ${topValue}`;
   }
 };
 
 // console.log(matchParens('([1+2])+3'));
-console.log(matchParens('((1+2{)+3'));
+console.log(matchParens('"((1+2{"()[+3'));
 // console.log(matchParens('hello'));
