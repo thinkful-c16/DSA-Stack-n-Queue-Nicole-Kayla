@@ -21,7 +21,11 @@ const helpers = {
   },
 
   display: function(stack) {
-    console.log(JSON.stringify(stack, null, 2));
+    let node = stack.head;
+    while (node !== null) {
+      console.log(node.value);
+      node = node.next;
+    }
   },
 
   remove: function(stack, data){
