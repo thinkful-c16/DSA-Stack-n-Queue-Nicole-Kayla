@@ -1,9 +1,10 @@
 'use strict';
 
 const Stack = require('./stack');
+let starTrek = new Stack();
+
 
 function createStack(){
-  let starTrek = new Stack();
 
   starTrek.push('Kirk');
   starTrek.push('Spock');
@@ -13,3 +14,12 @@ function createStack(){
 }
 
 createStack();
+
+const helpers = {
+  peek: function(stack) {
+    return stack.top.data;
+  }
+};
+
+
+console.log(helpers.peek(starTrek));
