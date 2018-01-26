@@ -4,10 +4,12 @@ const Stack = require('./stack');
 
 //== PALINDROMES==//
 
+
 const palinDromes = str => {
   str = str.toLowerCase().replace(/[^a-zA-Z0-9]/g, '');
 
   let strStack = new Stack();
+
 
   for (let i = 0; i < str.length; i++) {
     strStack.push(str[i]);
@@ -24,10 +26,10 @@ const palinDromes = str => {
 
 };
 
-console.log(palinDromes('A man, a plan, a canal: Panama'));
-console.log(palinDromes('dad'));
-console.log(palinDromes('1001'));
-console.log(palinDromes('Tauhida'));
+// console.log(palinDromes('A man, a plan, a canal: Panama'));
+// console.log(palinDromes('dad'));
+// console.log(palinDromes('1001'));
+// console.log(palinDromes('Tauhida'));
 
 
 //== MATCHING PARENTHESES ==//
@@ -40,28 +42,91 @@ console.log(palinDromes('Tauhida'));
 //If I see a closed parentheses I'll pop (only open parenthese will be available to pop) everything out of the stack
 //If stack is empty, parentheses are valid
 
-const matchParens = function(parens){
-  let parensStack = new Stack();
+const matchParens = function(parens) {
 
-  for (let i=0; i < parens.length; i++){
-    if(parens[i]===('(' || '{' || '[')) {
-      parensStack.push(parens[i]);
+  //compare popped value to the input
+  //case would be type of parens
+  //switch(parentsStack.value)
+  let parensStack = new Stack();
+  let topValue = null;
+
+
+  const peek = stack => {
+    // console.log('peek fn top value', topValue)
+    if (stack.top === null) {
+      return null;
+    } else {
+      topValue = stack.top.data;
+      return topValue;
     }
-    else if (!parensStack.top && parens[i]===(')' || ']' || '}')) {
+  };
+
+
+  for (let i=0; i < parens.length; i++) {
+
+    if(parens[i] === '(' || parens[i] === '{' || parens[i] === '[') {
+      parensStack.push(parens[i]);
+      console.log('Our stack >>>>>>', parensStack);
+    }
+
+    
+    else if (parens[i] === ')' ) {
+      peek(parensStack);
+      if (topValue === '(') {
+        parensStack.pop();
+      } else {
+        return `Was expecting ( but instead got ${topValue ? topValue : parens[i]}`;
+      }
+    }
+    else if (parens[i] === ']' ) {
+      peek(parensStack);
+      if (topValue === '[') {
+        parensStack.pop();
+      } else {
+        return `Was expecting [ but instead got ${topValue}`;
+      }
+    }
+    else if (parens[i] === '}' ) {
+      peek(parensStack);
+      if (topValue === '{') {
+        parensStack.pop();
+      } else {
+        return `Was expecting { but instead got ${topValue}`;
+      }
+    }
+    // else if (parens[i] === ']' ) {
+    //   peek(parensStack);
+    //   if (parensStack.top.data === '[') {
+    //     parensStack.pop();
+    //   } else {
+    //     return `Was expecting ] but instead for ${parensStack.top.data}`;
+    //   }
+    // }
+    // else if (parens[i] === '}') {
+    //   peek(parensStack);
+    //   if (parensStack.top.data === '{') {
+    //     parensStack.pop();
+    //   } else {
+    //     return `Was expecting } but instead for ${parensStack.top.data}`;
+    //   }
+      
+    // }
+    // else if (parens[i]===(')' || ']' || '}')){
+    //   parensStack.pop();
+    // }
+    else if (!topValue && parens[i] === ')' || parens[i] ===  ']' || parens[i] === '}') {
       return 'Invalid parens';
     }
-    else if (parens[i]===(')' || ']' || '}')){
-      parensStack.pop();
+    else {
+      return 'Parens are valid or no parens present';
     }
   }
-
-  if(parensStack.top === null) {
-    return 'Parens are valid';
-  }
-  else {
-    return 'Invalid parens';
-  }
+  // else {
+  //   console.log('i ran');
+  //   return 'Invalid parens';
+  // }
 };
 
-console.log(matchParens('(1+2)+3'));
-console.log(matchParens(')1+2)+3'));
+// console.log(matchParens('([1+2])+3'));
+console.log(matchParens('((1+2)+3'));
+// console.log(matchParens('hello'));

@@ -21,9 +21,9 @@ const helpers = {
   },
 
   display: function(stack) {
-    let node = stack.head;
+    let node = stack.top;
     while (node !== null) {
-      console.log(node.value);
+      console.log(node.data);
       node = node.next;
     }
   },
@@ -43,3 +43,5 @@ const helpers = {
 // console.log(helpers.peek(starTrek));
 // helpers.display(starTrek);
 helpers.remove(starTrek, 'McCoy');
+
+module.exports = helpers;
