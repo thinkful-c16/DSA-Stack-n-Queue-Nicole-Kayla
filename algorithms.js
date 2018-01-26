@@ -61,15 +61,10 @@ const matchParens = function(parens) {
     }
   };
 
-
   for (let i=0; i < parens.length; i++) {
-
     if(parens[i] === '(' || parens[i] === '{' || parens[i] === '[') {
       parensStack.push(parens[i]);
-      console.log('Our stack >>>>>>', parensStack);
     }
-
-    
     else if (parens[i] === ')' ) {
       peek(parensStack);
       if (topValue === '(') {
@@ -94,39 +89,15 @@ const matchParens = function(parens) {
         return `Was expecting { but instead got ${topValue}`;
       }
     }
-    // else if (parens[i] === ']' ) {
-    //   peek(parensStack);
-    //   if (parensStack.top.data === '[') {
-    //     parensStack.pop();
-    //   } else {
-    //     return `Was expecting ] but instead for ${parensStack.top.data}`;
-    //   }
-    // }
-    // else if (parens[i] === '}') {
-    //   peek(parensStack);
-    //   if (parensStack.top.data === '{') {
-    //     parensStack.pop();
-    //   } else {
-    //     return `Was expecting } but instead for ${parensStack.top.data}`;
-    //   }
-      
-    // }
-    // else if (parens[i]===(')' || ']' || '}')){
-    //   parensStack.pop();
-    // }
-    else if (!topValue && parens[i] === ')' || parens[i] ===  ']' || parens[i] === '}') {
-      return 'Invalid parens';
-    }
-    else {
-      return 'Parens are valid or no parens present';
-    }
   }
-  // else {
-  //   console.log('i ran');
-  //   return 'Invalid parens';
-  // }
+  if (!topValue) {
+    return 'Parens are valid';
+  }
+  else {
+    return `Parens missing- need closure for ${topValue}`;
+  }
 };
 
 // console.log(matchParens('([1+2])+3'));
-console.log(matchParens('((1+2)+3'));
+console.log(matchParens('((1+2{)+3'));
 // console.log(matchParens('hello'));
