@@ -22,9 +22,20 @@ const helpers = {
 
   display: function(stack) {
     console.log(JSON.stringify(stack, null, 2));
+  },
+
+  remove: function(stack, data){
+    let currNode = stack.top;
+    while(currNode.data !== data) {
+      stack.pop();
+      currNode = currNode.next;
+    }
+    stack.pop();
+    helpers.display(stack);
   }
 };
 
 
 // console.log(helpers.peek(starTrek));
-helpers.display(starTrek);
+// helpers.display(starTrek);
+helpers.remove(starTrek, 'McCoy');
